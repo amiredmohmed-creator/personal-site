@@ -1,4 +1,19 @@
+import { useContactForm } from './useContactForm';
+
+/**
+ * Main App component for Rima Creates personal website.
+ * Displays:
+ * - Header with navigation
+ * - Hero section (call-to-action)
+ * - Services section
+ * - About section
+ * - Contact section with validated form
+ * - Footer
+ */
 function App() {
+  // Use the contact form hook to manage form state and validation
+  const { formData, errors, loading, feedback, handleInputChange, handleSubmit } = useContactForm();
+
   return (
     <div className="page-shell">
       <header className="topbar">
@@ -86,8 +101,7 @@ function App() {
             <p className="eyebrow">Contact</p>
             <h2>Let’s talk about your next project.</h2>
           </div>
-          <div className="contact-grid">
-            <div className="contact-details">
+          <div className="contact-grid">            {/* Contact information section with direct links */}            <div className="contact-details">
               <p>
                 <strong>Email:</strong> <a href="mailto:amirditamo@gmail.com">amirditamo@gmail.com</a>
               </p>
@@ -98,27 +112,67 @@ function App() {
                 <strong>Ready to start?</strong> Use the form and I’ll reply fast.
               </p>
             </div>
+            {/* Contact form with validation and real-time error feedback */}
             <form
               className="contact-form"
-              action="https://formsubmit.co/amirditamo@gmail.com"
-              method="POST"
+              onSubmit={handleSubmit}
             >
-              <input type="hidden" name="_captcha" value="false" />
-              <input type="hidden" name="_subject" value="New contact request from website" />
+              {/* Success or error feedback message after submission */}
+              {feedback && (
+                <div className={`feedback feedback-${feedback.type}`}>
+                  {feedback.message}
+                </div>
+              )}
+              
+              {/* Name field with client-side validation (2-100 characters) */}
               <label>
                 Name
-                <input type="text" name="name" placeholder="Your name" required />
+                <input 
+                  type="text" 
+                  name="name" 
+                  placeholder="Your name" 
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  disabled={loading}
+                />
+                {errors.name && <span className="error-text">{errors.name}</span>}
               </label>
+              {/* Email field with format validation and sanitization */}
+              
               <label>
                 Email
-                <input type="email" name="email" placeholder="you@example.com" required />
+                <input 
+                  type="text" 
+                  name="email" 
+                  placeholder="you@example.com" 
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  disabled={loading}
+                />
+                {errors.email && <span className="error-text">{errors.email}</span>}
               </label>
+              {/* Message textarea with character limits (10-5000 characters) */}
+              
               <label>
                 Project details
-                <textarea name="message" placeholder="Tell me about your project" rows="5" required />
+                <textarea 
+                  name="message" 
+                  placeholder="Tell me about your project" 
+                  rows="5" 
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  disabled={loading}
+                />
+                {errors.message && <span className="error-text">{errors.message}</span>}
+              {/* Submit button - disabled during loading, rate-limited to 1 per 60s */}
               </label>
-              <button type="submit" className="button primary">
-                Send request
+              
+              <button 
+                type="submit" 
+                className="button primary"
+                disabled={loading}
+              >
+                {loading ? 'Sending...' : 'Send request'}
               </button>
             </form>
           </div>

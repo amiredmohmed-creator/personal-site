@@ -258,6 +258,56 @@ nav a:hover {
   color: var(--muted);
 }
 
+/* Form feedback and validation */
+.feedback {
+  padding: 14px 16px;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+.feedback-success {
+  background: rgba(110, 231, 183, 0.15);
+  border: 1px solid rgba(110, 231, 183, 0.35);
+  color: #a3f3d6;
+}
+
+.feedback-error {
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #fca5a5;
+}
+
+.error-text {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #fca5a5;
+}
+
+.contact-form input:invalid,
+.contact-form textarea:invalid {
+  border-color: rgba(248, 113, 113, 0.4);
+}
+
+.button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 860px) {
   .hero,
   .contact-grid {
